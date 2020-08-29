@@ -1,0 +1,93 @@
+<!doctype html>
+<!--
+    Flow 
+    - A user play the audio
+    - User records the seed audio, if no recording is avaiable 
+    - a function access mic and record the audio
+    - It is then saved to a storage bucket
+
+    Game Plan 
+    - record amd plays a sound 
+    - add gcloud storage bucket 
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Chinese Whisperer</title>
+  <meta name="description" 
+  content="A game where a chain of people speak what they listen from the people ahead of them">
+  <meta name="author" content="Rahul Gupta">
+    <!--
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    -->
+  
+</head>
+
+<body>
+<p> Play the clip below to hear the word</p>
+<audio id="player" src= "https://storage.cloud.google.com/garage-labs/chinese-whisperer/latest.webm" controls></audio>
+
+
+    <a id="download">Download</a>
+    <button id="stop">Stop</button>
+    <script>
+      let shouldStop = false;
+      let stopped = false;
+      const downloadLink = document.getElementById('download');
+      const stopButton = document.getElementById('stop');
+    
+      stopButton.addEventListener('click', function() {
+          console.log("Event fired: Click");
+        shouldStop = true;
+      });
+    
+      const handleSuccess = function(stream) {
+        const options = {mimeType: 'audio/webm'};
+        const recordedChunks = [];
+        const mediaRecorder = new MediaRecorder(stream, options);
+    
+        mediaRecorder.addEventListener('dataavailable', function(e) {
+            console.log("Event fired: dataavilable");
+          if (e.data.size > 0) {
+            recordedChunks.push(e.data);
+          }
+    
+          if(shouldStop === true && stopped === false) {
+              console.log("going to be stopped");
+            mediaRecorder.stop();
+            stopped = true;
+          }
+        });
+    
+        mediaRecorder.addEventListener('stop', function() {
+            console.log("media recorder stopped now");
+          downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
+          downloadLink.download = 'acetest.wav';
+
+          const formData = new FormData();
+          formData.append("file", new Blob(recordedChunks))
+          fetch('https://us-central1-garage-labs.cloudfunctions.net/uploadFile', {
+            method: 'POST',
+            body: formData
+          })
+        });
+    
+        mediaRecorder.start(timeslice=1000);
+      };
+    
+      navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+          .then(handleSuccess);
+    
+    </script>
+
+
+<!---
+play an audio stored in gs object
+
+--->
+
+
+</body>
+
+</html>

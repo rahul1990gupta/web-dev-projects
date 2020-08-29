@@ -1,0 +1,42 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The Calculator V1</title>
+  <meta name="description" content="Calculate that supports basic arithmatics">
+  <meta name="author" content="Rahul Gupta">
+    <!--
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    -->
+  
+</head>
+
+<body>
+  <script>
+      function calculateNumber(){0
+        var exp = num1.value + form.operator.value + num2.value
+        displayResult.innerHTML = eval(exp) 
+      }
+  </script>
+  <p align="center"> Hello, welcome to my calculator.</p>
+  <p align="center"> Please input the numbers and select operation below. </p>
+  <div id="container" align="center">   
+    <input type="number", id="num1">
+    <form name="form">
+        <select name="operator">
+           <option value = "+">+</option>
+           <option value = "-">-</option>
+           <option value = "*">X</option>
+           <option value = "/">/</option>
+        </select>
+    </form> 
+    <input type="number", id="num2">
+    </br>
+    <input type="submit", value="Calculate!" onClick="calculateNumber()">
+    <p id="displayResult"> </p> 
+  </div>
+</body>
+
+</html>

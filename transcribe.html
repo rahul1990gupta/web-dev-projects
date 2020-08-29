@@ -1,0 +1,35 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>Demo Transcribe</title>
+        <meta name="description" content="Demo project to transcribe the speech">
+        <meta name="author" content="Rahul Gupta">
+        <script src="https://kit.fontawesome.com/c8f8f11fed.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <script>
+            speechRecognition = new webkitSpeechRecognition();
+            speechRecognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript;
+                displayResult.innerText = "You Said: " + transcript;
+            };
+        function record(){
+
+                speechRecognition.start();
+
+            }
+        </script>
+        <div align="center">
+             <!-- <input type="submit", value="Record!" onClick="record()"> -->
+             <p style="font-size: 20px"> Click below to speak! </p>
+             <div onclick="record()">
+                <i class="fas fa-microphone" style="color:red !important; font-size: 50px"></i>
+            </div>
+            
+            <p id="displayResult" style="font-size: 20px"> </p> 
+        </div>
+    </body>
+</html>

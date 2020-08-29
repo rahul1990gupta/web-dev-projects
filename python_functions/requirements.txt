@@ -1,0 +1,3 @@
+# functions-framework 
+smart_open
+google-cloud-storage
